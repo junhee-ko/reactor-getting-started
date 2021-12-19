@@ -66,6 +66,13 @@ class FluxMonoGenerator {
             .concatMap { this.splitStringWithDelay(it) }
     }
 
+    fun namesMonoFlatMap(strLen: Long): Mono<List<String>> {
+        return Mono.just("junhee")
+            .map { it.uppercase(Locale.getDefault()) }
+            .filter { it.length > strLen }
+            .flatMap { this.splitStringMono(it) }
+    }
+
     private fun splitString(name: String): Flux<String> {
         val split: List<String> = name.split("").filter { it.isNotEmpty() }
 
@@ -78,6 +85,12 @@ class FluxMonoGenerator {
 
         return Flux.fromIterable(split)
             .delayElements(Duration.ofMillis(delay.toLong()))
+    }
+
+    private fun splitStringMono(name: String): Mono<List<String>> {
+        val split: List<String> = name.split("").filter { it.isNotEmpty() }
+
+        return Mono.just(split)
     }
 }
 
