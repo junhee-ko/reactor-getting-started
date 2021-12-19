@@ -73,6 +73,13 @@ class FluxMonoGenerator {
             .flatMap { this.splitStringMono(it) }
     }
 
+    fun namesMonoFlatMapMany(strLen: Long): Flux<String> {
+        return Mono.just("junhee")
+            .map { it.uppercase(Locale.getDefault()) }
+            .filter { it.length > strLen }
+            .flatMapMany { this.splitStringWithDelay(it) }
+    }
+
     private fun splitString(name: String): Flux<String> {
         val split: List<String> = name.split("").filter { it.isNotEmpty() }
 

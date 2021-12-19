@@ -133,4 +133,18 @@ class FluxMonoGeneratorTest {
 //            .expectNextCount(6)
             .verifyComplete()
     }
+
+    @Test
+    fun namesMonoFlatMapMany() {
+        // given
+        val strLen = 2L
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.namesMonoFlatMapMany(strLen).log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("J", "U", "N", "H", "E", "E")
+            .verifyComplete()
+    }
 }
