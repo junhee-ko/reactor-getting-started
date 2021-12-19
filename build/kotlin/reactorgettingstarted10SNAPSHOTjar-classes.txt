@@ -1,0 +1,1 @@
+/Users/jko.me/Development/Private/reactor-getting-started/build/classes/kotlin/main/jko/FluxMonoGenerator.class
