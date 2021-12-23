@@ -92,6 +92,19 @@ class FluxMonoGenerator {
             .flatMap { this.splitString(it) }
     }
 
+    fun namesFluxTransformDefaultIfEmpty(strLen: Long): Flux<String> {
+        val names = listOf("ko", "jun", "hee")
+
+        return Flux.fromIterable(names)
+            .transform { name ->
+                name
+                    .map { it.uppercase(Locale.getDefault()) }
+                    .filter { it.length > strLen }
+            }
+            .flatMap { this.splitString(it) }
+            .defaultIfEmpty("default")
+    }
+
     private fun splitString(name: String): Flux<String> {
         val split: List<String> = name.split("").filter { it.isNotEmpty() }
 
