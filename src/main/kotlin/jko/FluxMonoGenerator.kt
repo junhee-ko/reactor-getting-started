@@ -1,5 +1,6 @@
 package jko
 
+import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.time.Duration
@@ -103,6 +104,30 @@ class FluxMonoGenerator {
             }
             .flatMap { this.splitString(it) }
             .defaultIfEmpty("default")
+    }
+
+    fun namesFluxTransformSwitchIfEmpty(strLen: Long): Flux<String> {
+//        val filterMap = fun(name: Flux<String>): Publisher<String>? {
+//            return name
+//                .map { it.uppercase(Locale.getDefault()) }
+//                .filter { it.length > strLen }
+//        }
+
+        val filterMap = { name: Flux<String> ->
+            name
+                .map { it.uppercase(Locale.getDefault()) }
+                .filter { it.length > strLen }
+                .flatMap { this.splitString(it) }
+        }
+
+        val names = listOf("ko", "jun", "hee")
+
+        val defaultFlux = Flux.just("default")
+            .transform(filterMap)
+
+        return Flux.fromIterable(names)
+            .transform(filterMap)
+            .switchIfEmpty(defaultFlux)
     }
 
     private fun splitString(name: String): Flux<String> {

@@ -175,4 +175,18 @@ class FluxMonoGeneratorTest {
             .expectNext("default")
             .verifyComplete()
     }
+
+    @Test
+    fun namesFluxTransformSwitchIfEmpty() {
+        // given
+        val strLen = 3L
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.namesFluxTransformSwitchIfEmpty(strLen).log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("D", "E", "F", "A", "U", "L", "T")
+            .verifyComplete()
+    }
 }
