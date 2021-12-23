@@ -130,6 +130,34 @@ class FluxMonoGenerator {
             .switchIfEmpty(defaultFlux)
     }
 
+    fun concat(): Flux<String> {
+        val abcFlux = Flux.just("a", "b", "c")
+        val defFlux = Flux.just("d", "e", "f")
+
+        return Flux.concat(abcFlux, defFlux)
+    }
+
+    fun concatWith(): Flux<String> {
+        val abcFlux = Flux.just("a", "b", "c")
+        val defFlux = Flux.just("d", "e", "f")
+
+        return abcFlux.concatWith(defFlux)
+    }
+
+    fun concatMono(): Flux<String> {
+        val aMono = Mono.just("a")
+        val bMono = Mono.just("b")
+
+        return Flux.concat(aMono, bMono)
+    }
+
+    fun concatWithMono(): Flux<String> {
+        val aMono = Mono.just("a")
+        val bMono = Mono.just("b")
+
+        return aMono.concatWith(bMono)
+    }
+
     private fun splitString(name: String): Flux<String> {
         val split: List<String> = name.split("").filter { it.isNotEmpty() }
 

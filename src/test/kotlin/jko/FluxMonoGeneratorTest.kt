@@ -189,4 +189,56 @@ class FluxMonoGeneratorTest {
             .expectNext("D", "E", "F", "A", "U", "L", "T")
             .verifyComplete()
     }
+
+    @Test
+    fun concat() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.concat().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("a", "b", "c", "d", "e", "f")
+            .verifyComplete()
+    }
+
+    @Test
+    fun concatWith() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.concatWith().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("a", "b", "c", "d", "e", "f")
+            .verifyComplete()
+    }
+
+    @Test
+    fun concatMono() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.concatMono().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("a", "b")
+            .verifyComplete()
+    }
+
+    @Test
+    fun concatWithMono() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.concatWithMono().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("a", "b")
+            .verifyComplete()
+    }
 }
