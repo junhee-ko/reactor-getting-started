@@ -198,6 +198,53 @@ class FluxMonoGenerator {
         return Flux.mergeSequential(abcFlux, defFlux)
     }
 
+    // wait for all the publishers involved in the transformation to emit one element
+    fun zip(): Flux<String> {
+        val abcFlux = Flux.just("A", "B", "C")
+            .delayElements(Duration.ofMillis(5000))
+
+        val defFlux = Flux.just("D", "E", "F")
+            .delayElements(Duration.ofMillis(125))
+
+        return Flux.zip(abcFlux, defFlux) { first, second -> first + second }
+    }
+
+    fun zip4(): Flux<String> {
+        val abcFlux = Flux.just("A", "B", "C")
+        val defFlux = Flux.just("D", "E", "F")
+        val _123Flux = Flux.just("1", "2", "3")
+        val _456Flux = Flux.just("4", "5", "6")
+
+        return Flux.zip(abcFlux, defFlux, _123Flux, _456Flux)
+            .map { tuple -> tuple.t1 + tuple.t2 + tuple.t3 + tuple.t4 }
+    }
+
+    fun zipMono(): Flux<String> {
+        val aMono = Mono.just("A")
+        val bMono = Mono.just("B")
+
+        return Flux.zip(aMono, bMono) { first, second -> first + second }
+    }
+
+    fun zipWith(): Flux<String> {
+        val abcFlux = Flux.just("A", "B", "C")
+            .delayElements(Duration.ofMillis(2000))
+
+        val defFlux = Flux.just("D", "E", "F")
+            .delayElements(Duration.ofMillis(125))
+
+        return abcFlux.zipWith(defFlux)
+            .map { tuple -> tuple.t1 + tuple.t2 }
+    }
+
+    fun zipWithMono(): Mono<String> {
+        val aMono = Mono.just("A")
+        val bMono = Mono.just("B")
+
+        return aMono.zipWith(bMono)
+            .map { tuple -> tuple.t1 + tuple.t2 }
+    }
+
     private fun splitString(name: String): Flux<String> {
         val split: List<String> = name.split("").filter { it.isNotEmpty() }
 

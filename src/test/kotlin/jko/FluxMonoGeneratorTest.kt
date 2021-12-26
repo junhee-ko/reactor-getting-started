@@ -293,4 +293,69 @@ class FluxMonoGeneratorTest {
             .expectNext("A", "B", "C", "D", "E", "F")
             .verifyComplete()
     }
+
+    @Test
+    fun zip() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.zip().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("AD", "BE", "CF")
+            .verifyComplete()
+    }
+
+    @Test
+    fun zip4() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.zip4().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("AD14", "BE25", "CF36")
+            .verifyComplete()
+    }
+
+    @Test
+    fun zipMono() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.zipMono().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("AB")
+            .verifyComplete()
+    }
+
+    @Test
+    fun zipWith() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.zipWith().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("AD", "BE", "CF")
+            .verifyComplete()
+    }
+
+    @Test
+    fun zipWithMono() {
+        // given
+
+        // when
+        val names: Mono<String> = fluxMonoGenerator.zipWithMono().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("AB")
+            .verifyComplete()
+    }
 }
