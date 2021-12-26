@@ -130,6 +130,7 @@ class FluxMonoGenerator {
             .switchIfEmpty(defaultFlux)
     }
 
+    // concat() subscribes to the publishers in a sequence ( compared to merge function )
     fun concat(): Flux<String> {
         val abcFlux = Flux.just("a", "b", "c")
         val defFlux = Flux.just("d", "e", "f")
@@ -158,6 +159,7 @@ class FluxMonoGenerator {
         return aMono.concatWith(bMono)
     }
 
+    // publishers are subscribed eagerly and merge in an interleaved fashion
     fun merge(): Flux<String> {
         val abcFlux = Flux.just("A", "B", "C")
             .delayElements(Duration.ofMillis(100))
