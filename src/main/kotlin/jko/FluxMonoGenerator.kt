@@ -158,6 +158,33 @@ class FluxMonoGenerator {
         return aMono.concatWith(bMono)
     }
 
+    fun merge(): Flux<String> {
+        val abcFlux = Flux.just("A", "B", "C")
+            .delayElements(Duration.ofMillis(100))
+
+        val defFlux = Flux.just("D", "E", "F")
+            .delayElements(Duration.ofMillis(125))
+
+        return Flux.merge(abcFlux, defFlux)
+    }
+
+    fun mergeWith(): Flux<String> {
+        val abcFlux = Flux.just("A", "B", "C")
+            .delayElements(Duration.ofMillis(100))
+
+        val defFlux = Flux.just("D", "E", "F")
+            .delayElements(Duration.ofMillis(125))
+
+        return abcFlux.mergeWith(defFlux)
+    }
+
+    fun mergeWithMono(): Flux<String> {
+        val aMono = Mono.just("A")
+        val bMono = Mono.just("B")
+
+        return aMono.mergeWith(bMono)
+    }
+
     private fun splitString(name: String): Flux<String> {
         val split: List<String> = name.split("").filter { it.isNotEmpty() }
 

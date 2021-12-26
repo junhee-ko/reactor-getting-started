@@ -241,4 +241,43 @@ class FluxMonoGeneratorTest {
             .expectNext("a", "b")
             .verifyComplete()
     }
+
+    @Test
+    fun merge() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.merge().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("A", "D", "B", "E", "C", "F")
+            .verifyComplete()
+    }
+
+    @Test
+    fun mergeWith() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.mergeWith().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("A", "D", "B", "E", "C", "F")
+            .verifyComplete()
+    }
+
+    @Test
+    fun mergeWithMono() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.mergeWithMono().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("A", "B")
+            .verifyComplete()
+    }
 }
