@@ -187,6 +187,17 @@ class FluxMonoGenerator {
         return aMono.mergeWith(bMono)
     }
 
+    // the publishers are subscribed eagerly and the merge happens in a sequence
+    fun mergeSequential(): Flux<String> {
+        val abcFlux = Flux.just("A", "B", "C")
+            .delayElements(Duration.ofMillis(100))
+
+        val defFlux = Flux.just("D", "E", "F")
+            .delayElements(Duration.ofMillis(125))
+
+        return Flux.mergeSequential(abcFlux, defFlux)
+    }
+
     private fun splitString(name: String): Flux<String> {
         val split: List<String> = name.split("").filter { it.isNotEmpty() }
 

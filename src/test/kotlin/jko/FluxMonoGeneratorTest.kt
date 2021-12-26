@@ -280,4 +280,17 @@ class FluxMonoGeneratorTest {
             .expectNext("A", "B")
             .verifyComplete()
     }
+
+    @Test
+    fun mergeSequential() {
+        // given
+
+        // when
+        val names: Flux<String> = fluxMonoGenerator.mergeSequential().log()
+
+        // then
+        StepVerifier.create(names)
+            .expectNext("A", "B", "C", "D", "E", "F")
+            .verifyComplete()
+    }
 }
